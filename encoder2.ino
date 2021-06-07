@@ -10,19 +10,6 @@
 // 04.02.2021 conditions and settings added for ESP8266
 // -----
 
-// This example checks the state of the rotary encoder using interrupts and in the loop() function.
-// The current position and direction is printed on output when changed.
-
-// Hardware setup:
-// Attach a rotary encoder with output pins to
-// * 2 and 3 on Arduino UNO. (supported by attachInterrupt)
-// * A2 and A3 can be used when directly using the ISR interrupts, see comments below.
-// * D5 and D6 on ESP8266 board (e.g. NodeMCU).
-// Swap the pins when direction is detected wrong.
-// The common contact should be attached to ground.
-//
-// Hints for using attachinterrupt see https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
-
 #include <Arduino.h>
 #include <RotaryEncoder.h>
 #include <SoftwareSerial.h>
@@ -39,18 +26,14 @@ uint8_t hourAlarmValue = 11; //0-24
 uint8_t weekdayAlarmValue = SUNDAY | SATURDAY; //Or together days of the week to enable the alarm on those days.
 uint8_t dateAlarmValue = 0; //1-31
 
-//Define which alarm registers we want to match, make sure you only enable weekday or date alarm, enabling both will default to a date alarm
-//In its current state, an alarm will be generated once an hour, when the MINUTES registers on the time and alarm match. Setting MINUTE_ALARM_ENABLE to false would trigger an alarm every minute
 #define MINUTE_ALARM_ENABLE true
 #define HOUR_ALARM_ENABLE true
 #define WEEKDAY_ALARM_ENABLE false
 #define DATE_ALARM_ENABLE false
 
-// Setup a RotaryEncoder with 4 steps per latch for the 2 signal input pins:
+// Setup a RotaryEncoder with two signal input pins:
 RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::FOUR3);
 
-// Setup a RotaryEncoder with 2 steps per latch for the 2 signal input pins:
-//RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
 
 
 void checkPosition()
@@ -164,7 +147,7 @@ void loop() {
       lcd.print("      days");
     }
 }
-
+// check the state of the water level senor - if high signal to the user they must refill
 lastState = currentState;
 }
 
